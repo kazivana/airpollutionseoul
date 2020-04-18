@@ -24,10 +24,13 @@ summary_pm_tidy
 mean_summary_tidy <- melt(mean_summary, id.vars = 'year')
 mean_summary_tidy
 
-colset_4 <-  c("#D35C37", "#BF9A77", "#D6C6B9", "#97B8C2")
-
-ggplot(mean_summary_tidy, aes(x = year, y = value, fill = year)) +
+ggplot(mean_summary_tidy, aes(x = variable, y = value, fill = variable)) +
   geom_bar(stat='identity') +
-  facet_wrap(~variable, scales = 'free') + 
-  theme_bw()
+  theme_bw() +
+  transition_states(
+    year,
+    transition_length = 2,
+    state_length = 1
+  ) +
+  ease_aes('sine-in-out')
 
