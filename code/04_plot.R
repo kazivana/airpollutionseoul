@@ -26,6 +26,8 @@ ggplot(mean_summary_pm_tidy, aes(x = variable, y = value, fill = variable)) +
   ) +
   ease_aes('sine-in-out')
 
+anim_save('pm_values.gif')
+
 ggplot(mean_summary_pol_tidy, aes(x = variable, y = value, fill = variable)) +
   geom_bar(stat='identity') +
   theme_bw() +
@@ -35,4 +37,7 @@ ggplot(mean_summary_pol_tidy, aes(x = variable, y = value, fill = variable)) +
     state_length = 1
   ) +
   ease_aes('sine-in-out')
+getwd()
 
+
+anim_save('pollutant_values.gif')
