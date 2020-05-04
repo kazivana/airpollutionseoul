@@ -1,0 +1,96 @@
+---
+title: "Air Pollution Seoul"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE, eval = T}
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_knit$set(root.dir = "C:/Users/godzi/Documents/airpollutionseoul")
+```
+
+# Air Poluttion in Seoul:
+### What are the trends for pollutants in Seoul?
+
+```{r cars, echo = FALSE, message = FALSE}
+
+library(data.table)
+library(mapview)
+library(sf)
+library(ggplot2)
+library(gganimate)
+
+
+
+station_info <- readRDS('./data/station_info.rds')
+
+station_coords <- st_as_sf(station_info,
+                           coords = c('Latitude', 'Longitude'))
+                           
+mapview(station_coords, map.types = 'Stamen.TerrainBackground')
+
+
+```
+
+## These are our measuring stations, distributed across the city. 
+
+```{r, echo = FALSE}
+
+mean_summary <- readRDS('./data/mean_summary.rds')
+
+knitr::kable(mean_summary)
+
+```
+  
+  
+    
+    
+
+The below plot shows us through animation how the means have been changing for various pollutants. 
+
+```{r, echo = FALSE}
+
+
+mean_summary_pm <- readRDS('./data/mean_summary_pm.rds')
+mean_summary_pol <- readRDS('./data/mean_summary_pol.rds')
+
+
+mean_summary_pm_tidy <- melt(mean_summary_pm, id.vars = 'year')
+
+mean_summary_pol_tidy <- melt(mean_summary_pol, id.vars = 'year')
+
+pm_plot <- ggplot(mean_summary_pm_tidy, aes(x = variable, y = value, fill = variable)) +
+  geom_bar(stat='identity') +
+  theme_bw() +
+  transition_states(
+    year,
+    transition_length = 2,
+    state_length = 1
+  ) +
+  ease_aes('sine-in-out')
+
+```
+
+
+``` {r, echo = FALSE}
+
+animate(pm_plot)
+
+```
+
+
+
+```{r, echo = FALSE}
+
+ggplot(mean_summary_pol_tidy, aes(x = variable, y = value, fill = variable)) +
+  geom_bar(stat='identity') +
+  theme_bw() +
+  transition_states(
+    year,
+    transition_length = 2,
+    state_length = 1
+  ) +
+  ease_aes('sine-in-out')
+getwd()
+
+```
+
