@@ -9,7 +9,10 @@ knitr::opts_knit$set(root.dir = "C:/Users/godzi/Documents/airpollutionseoul")
 ```
 
 # Air Poluttion in Seoul:
-### What are the trends for pollutants in Seoul?
+### Below is a map showcasing the locations of the measuring stations:  
+
+  
+  
 
 ```{r cars, echo = FALSE, message = FALSE}
 
@@ -18,20 +21,20 @@ library(mapview)
 library(sf)
 library(ggplot2)
 library(gganimate)
-
-
+library(leaflet)
 
 station_info <- readRDS('./data/station_info.rds')
+station_info_coords <- station_info[4:5]
 
-station_coords <- st_as_sf(station_info,
-                           coords = c('Latitude', 'Longitude'))
-                           
-mapview(station_coords, map.types = 'Stamen.TerrainBackground')
+themap <- leaflet() %>%
+  addTiles() %>%
+  addMarkers(lng=station_info_coords$Longitude, lat = station_info_coords$Latitude)
+themap
 
 
 ```
 
-## These are our measuring stations, distributed across the city. 
+## The below map shows us the average values of each of the pollutants, per year. 
 
 ```{r, echo = FALSE}
 
